@@ -7,6 +7,7 @@
             Console.WriteLine("Hello,Chess World!");
             var board = new ChessBoard();
             board.Display();
+
         }
     }
 }
