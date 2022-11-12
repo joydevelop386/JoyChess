@@ -1,14 +1,63 @@
-﻿namespace ConsoleApp1
+﻿using System.Collections;
+
+namespace ConsoleApp1
 {
     public class ChessBoard
     {
         private const int MaxWidth = 8;
         private readonly Piece[,] _board;
+        private readonly Dictionary<char, int> cnv = new()
+        {
+            {'a',0 }, {'b',1 }, {'c',2 }, {'d',3 }, {'e',4 }, {'f',5 }, {'g',6 }, {'h',7 }
+        };
 
         public ChessBoard()
         {
             _board = new Piece[MaxWidth, MaxWidth];
             InitField();
+        }
+
+
+        public void ReadMove()
+        {
+            var newMovestr = Console.ReadLine();
+            var newMove = CreateNewMoveFromString(newMovestr?.ToLower());
+
+        }
+
+        private Move CreateNewMoveFromString(string newMovestr)
+        {
+            var newMove = new Move();
+            if (validateMoveString(newMovestr))
+            {
+                newMove.StratX = cnv[newMovestr[0]];
+                newMove.StratY = MaxWidth - int.Parse(newMovestr[1].ToString());
+
+                newMove.EndX = cnv[newMovestr[2]];
+                newMove.EndY = MaxWidth - int.Parse(newMovestr[3].ToString());
+            }
+            return newMove;
+        }
+
+        private bool validateMoveString(string move)
+        {
+            bool flag = true;
+            const string aviableChar= "abcdefgh";
+            const string aviableDigit = "12345678";
+            if (move.Length != 4) return false;
+
+            if (!aviableChar.Contains(move[0])) flag = false;
+            if(!aviableDigit.Contains(move[1])) flag = false;
+
+            if (!aviableChar.Contains(move[2])) flag = false;
+            if (!aviableDigit.Contains(move[3])) flag = false;
+
+            return flag;
+        }
+
+        private void ValidateNewMove()
+        {
+
         }
 
         private void InitField()
